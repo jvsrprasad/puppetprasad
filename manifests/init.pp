@@ -42,7 +42,7 @@
 #
 # Copyright 2018 Your name here, unless otherwise noted.
 #
-class web {
+#class web {
 
 
 #	package { 'httpd':
@@ -66,9 +66,18 @@ class web {
 #        	name => 'httpd',
 #        	enable => true,
 #		}
-class { 'web::install': }
-class { 'web::webdeploy': }
-class { 'web::service': }
+#
+class web (
+String $class_package_name = $::web::params::package_name,
+String $class_service_name = $::web::params::service_name,
+String $class_server_ip = $::web::params::server_ip,
+) inherits ::web::params {
+	class { 'web::install': }
+	class { 'web::docroot': }
+	class { 'web::webconf': }
+	class { 'web::webdeploy': }
+	class { 'web::service': }
+Class['web::install']  -> Class['web::docroot'] -> Class['web::webconf'] -> Class['web::webdeploy'] ->  Class['web::service']
 
-
+notify {hiera('secret'):  }
 }
