@@ -45,4 +45,30 @@
 class web {
 
 
+#	package { 'httpd':
+#		ensure => 'present',
+#		}
+
+#	package { 'web softwar':
+#    		ensure => 'present',
+#    		name => 'httpd',
+#    		}
+#
+#	file { 'deploy web page':
+#		ensure => file,
+#		path => '/var/www/html/index.html',
+#		source => 'puppet:///modules/web/index.html',
+#		owner => 'apache',
+#		mode => '0644',
+#		}
+#	service { 'web services':
+#        	ensure => running,
+#        	name => 'httpd',
+#        	enable => true,
+#		}
+class { 'web::install': }
+class { 'web::webdeploy': }
+class { 'web::service': }
+
+
 }
